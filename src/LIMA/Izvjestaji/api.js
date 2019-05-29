@@ -193,7 +193,7 @@ export const predmeti = {
             }, 100)
         })
     },
-    getPredmetiStudenta: (studentId) => {
+    getPredmetiStudenta: (studentId) => {//vraca predmete koje student slusa na trenutnoj godini
         return new Promise((resolve, reject) => {
             setTimeout(() => {//vraca objekat od dva niza objekata predmeti, predmet je oblika {naziv: "naziv", id: "id"}
                 resolve({
@@ -212,5 +212,27 @@ export const godine = {
                 resolve(godineNiz)
             }, 100)
         })
+    },
+    getTrenutnaGodina: () => {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {//vraca objekat godina, godina je oblika {naziv: "2016/2017", id: "id"}
+                resolve(godineNiz[2])
+            }, 100)
+        })
     }
 } 
+
+
+export const student = {
+    getProsjeci: (studentId) => {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {//vraca niz objekata oblika {naziv: "2016/2017", godinaId: "idgodine", prosjek: 6.6}
+                resolve([
+                    {naziv: "2016/2017", godinaId: 12, prosjek: 7.6},
+                    {naziv: "2017/2018", godinaId: 13, prosjek: 7.2},
+                    {naziv: "2018/2019", godinaId: 14, prosjek: 7.8},
+                ])
+            }, 100)
+        })
+    }
+}

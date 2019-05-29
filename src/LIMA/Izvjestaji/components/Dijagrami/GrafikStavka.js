@@ -50,7 +50,7 @@ class GrafikStavka extends Component {
             dataForState = {
                 labels: [],
                 datasets: [{
-                    label: nazivStavke,
+                    label: nazivStavke!="Ocjena" ? "Bodovi: "+nazivStavke : nazivStavke,
                     backgroundColor: 'rgba(15,145,20,0.2)',
                     borderColor: 'rgba(15,145,20,1)',
                     borderWidth: 1,
@@ -63,7 +63,7 @@ class GrafikStavka extends Component {
             dataForState = {
                 labels: [],
                 datasets: [{
-                    label: nazivStavke,
+                    label: "Bodovi: "+nazivStavke,
                     backgroundColor: [],
                     borderColor: [],
                     borderWidth: 1,

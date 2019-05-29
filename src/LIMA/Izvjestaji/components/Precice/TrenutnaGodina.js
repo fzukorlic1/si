@@ -2,9 +2,9 @@ import React, { Component, Fragment } from 'react';
 import { Icon } from '@opuscapita/react-icons';
 import { Spinner } from 'reactstrap';
 import { toast } from 'react-toastify';
+import { Link } from "react-router-dom";
 
-import Precica from './Precica.js';
-import { predmeti } from '../../api.js';
+import { predmeti, godine } from '../../api.js';
 
 class TrenutnaGodina extends Component {
     constructor(props){
@@ -21,38 +21,54 @@ class TrenutnaGodina extends Component {
     }
     componentDidMount(){
         let studentId = 3;
-        predmeti.getPredmetiStudenta(studentId).then((data)=>{
-            let { polozeni , nepolozeni } = data;
-            this.setState({
-                izvjestaji: izvjestaji
+        godine.getTrenutnaGodina().then((godina)=>{
+            predmeti.getPredmetiStudenta(studentId).then((data)=>{
+                let { polozeni , nepolozeni } = data;
+                this.setState({
+                    polozeni: polozeni.map((predmet)=>{ return { naziv: predmet.naziv, predmetId: predmet.id, godinaId: godina.id }}),
+                    nepolozeni: nepolozeni.map((predmet)=>{ return { naziv: predmet.naziv, predmetId: predmet.id, godinaId: godina.id }})
+                })
             })
-        })
+        });
     }
     renderIzvjestajiLinks(){
-        if(this.state.izvjestaji.length == 0)return <div className="card-body border px-2 d-flex justify-content-center">Nemate sacuvanih izvjestaja.</div>
-        return this.state.izvjestaji.map((izvjestaj)=>{
-            return <div className="card-body border p-0" key={`${izvjestaj.godinaId}${izvjestaj.predmetId}`}>
-                <Precica izvjestaj={izvjestaj} deleteIzvjestaj={(izvjestaj)=>{this.deleteIzvjestajLink(izvjestaj)}}/>
-            </div>
-        })
+        let { polozeni, nepolozeni } = this.state;
+        if(polozeni.length + nepolozeni.length == 0)return <div className="card-body border px-2 d-flex justify-content-center">Nemate predmeta.</div>
+        return [
+            polozeni.map((izvjestaj)=>{
+                let { naziv, godinaId, predmetId } = izvjestaj;
+                let putanja = `/Lima/izvjestaji/godina=${godinaId}&predmet=${predmetId}`;
+                return <div className="card-body border p-0" key={`${izvjestaj.godinaId}${izvjestaj.predmetId}`}>
+                    <div className="d-flex align-items-center w-100 LIMA-btn-green card-header py-0" style={{backgroundColor: "##ffb7b7"}}>
+                        <Link to={putanja} className="d-flex align-items-center w-100" style={{minHeight: 50, color: 'black'}}>{naziv}</Link>
+                    </div>
+                </div>
+            }),
+            nepolozeni.map((izvjestaj)=>{
+                let { naziv, godinaId, predmetId } = izvjestaj;
+                let putanja = `/Lima/izvjestaji/godina=${godinaId}&predmet=${predmetId}`;
+                return <div className="card-body border p-0" key={`${izvjestaj.godinaId}${izvjestaj.predmetId}`}>
+                    <div className="d-flex align-items-center w-100 LIMA-btn-red card-header py-0">
+                        <Link to={putanja} className="d-flex align-items-center w-100" style={{minHeight: 50, color: 'black'}}>{naziv}</Link>
+                    </div>
+                </div>
+            }),
+        ];
     }
     render(){
         return (
-            <Fragment>
+            <div className="pb-2">
                 <h4 className="d-flex card-header border" style={{borderColor: '#f8f9fa'}}>
-                    Sacuvani izvjestaji
-                    <div onClick={()=>{this.toggleCreateModal()}} className="float-right" style={{position: 'absolute', right: '20px', cursor: 'pointer'}}>
-                        <Icon type="indicator" name="plus" />
-                    </div>
+                    Predmeti ove godine
                 </h4>
                 {
-                    this.state.izvjestaji ?
+                    this.state.polozeni ?
                     this.renderIzvjestajiLinks() :
                     <div className="card-body border px-2 d-flex justify-content-center">
                         <Spinner />
                     </div>
                 }
-            </Fragment>
+            </div>
         )
     }
 }

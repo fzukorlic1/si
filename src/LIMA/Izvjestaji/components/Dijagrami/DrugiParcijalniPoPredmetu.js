@@ -4,6 +4,7 @@ import GrafikStavka from './GrafikStavka.js';
 
 import { dataPredmetPoGodini } from '../../api.js';
 import { Spinner } from 'reactstrap';
+import { nazivStavkePoTipu } from '../../static/dummy.js';
 
 class DrugiParcijalniPoPredmetu extends Component {
     constructor(){
