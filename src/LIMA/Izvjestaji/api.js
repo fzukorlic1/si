@@ -90,7 +90,7 @@ export const dataPredmetPoGodini = {
                         resolve([90, 90, 65, 65, 65, 55, 55, 55, 55]);//2 studenta imala 90, 3 imalo 65 i 4 imalo 55 bodova ukupno
                     }, 100);
                 }) 
-            case "Ocjena"://vraca se niz ocjena
+            case "Ocjena"://vraca se niz ocjena, ako neki student nije polozio za njega se vraca "Nije polozio"
                 return new Promise((resolve, reject) => {
                     setTimeout(() => {
                         resolve(["Nije polozio", "Nije polozio", 6, 6, 6, 6, 7, 7, 7]);//2 studenta palo, 4 imalo 6 i 3 imalo 7 ocjenu
@@ -141,7 +141,7 @@ export const dataPredmetPoGodini = {
     }
 };
 
-//izvjestaj je u obliku {naziv: "naziv", putanja: "/Lima/izvjestaji/godina=12&predmet=2"}
+//izvjestaj je u obliku kao objekti iz niza sacuvaniIzvjestajNiz
 export const sacuvaniIzvjestaji = {//vraca se niz sacuvanih izvjestaja
     get: (studentId) => {
         return new Promise((resolve, reject) => {
@@ -169,7 +169,7 @@ export const sacuvaniIzvjestaji = {//vraca se niz sacuvanih izvjestaja
     },
     put: (studentId, izvjestaj) => {
         return new Promise((resolve, reject) => {
-            setTimeout(() => {//ako uspije dodavanje vratiti objekat kao ispod
+            setTimeout(() => {//ako uspije dodavanje vratiti objekat kao ispod u resolve
                 let { godinaId, predmetId } = izvjestaj;
                 for(let i=0;i<sacuvaniIzvjestajiNiz.length;i++){
                     if(sacuvaniIzvjestajiNiz[i].godinaId == godinaId && sacuvaniIzvjestajiNiz[i].predmetId == predmetId){
