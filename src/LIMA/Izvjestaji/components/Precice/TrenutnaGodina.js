@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Icon } from '@opuscapita/react-icons';
-import { Spinner } from 'reactstrap';
+import { Spinner, Collapse } from 'reactstrap';
 import { toast } from 'react-toastify';
 import { Link } from "react-router-dom";
 
@@ -12,6 +12,8 @@ class TrenutnaGodina extends Component {
         this.state = {
             polozeni: null,
             nepolozeni: null,
+            collapsePolozeni: false,
+            collapseNepolozeni: false
         }
     }
     toggleCreateModal(){
@@ -34,26 +36,50 @@ class TrenutnaGodina extends Component {
     renderIzvjestajiLinks(){
         let { polozeni, nepolozeni } = this.state;
         if(polozeni.length + nepolozeni.length == 0)return <div className="card-body border px-2 d-flex justify-content-center">Nemate predmeta.</div>
-        return [
-            polozeni.map((izvjestaj)=>{
-                let { naziv, godinaId, predmetId } = izvjestaj;
-                let putanja = `/Lima/izvjestaji/godina=${godinaId}&predmet=${predmetId}`;
-                return <div className="card-body border p-0" key={`${izvjestaj.godinaId}${izvjestaj.predmetId}`}>
-                    <div className="d-flex align-items-center w-100 LIMA-btn-green card-header py-0" style={{backgroundColor: "##ffb7b7"}}>
-                        <Link to={putanja} className="d-flex align-items-center w-100" style={{minHeight: 50, color: 'black'}}>{naziv}</Link>
-                    </div>
-                </div>
-            }),
-            nepolozeni.map((izvjestaj)=>{
-                let { naziv, godinaId, predmetId } = izvjestaj;
-                let putanja = `/Lima/izvjestaji/godina=${godinaId}&predmet=${predmetId}`;
-                return <div className="card-body border p-0" key={`${izvjestaj.godinaId}${izvjestaj.predmetId}`}>
-                    <div className="d-flex align-items-center w-100 LIMA-btn-red card-header py-0">
-                        <Link to={putanja} className="d-flex align-items-center w-100" style={{minHeight: 50, color: 'black'}}>{naziv}</Link>
-                    </div>
-                </div>
-            }),
-        ];
+        return (
+            <Fragment>
+                <h6 className="card-header btn-light border" style={{borderColor: '#dddddd'}} onClick={()=>{
+                        this.setState({collapsePolozeni: !this.state.collapsePolozeni})
+                    }}>
+                    {"Polozeni predmeti"}
+                </h6>
+                <Collapse isOpen={this.state.collapsePolozeni}>
+                        <div className="card-body border p-0" style={{borderColor: '#aaa'}}>
+                            {
+                                polozeni.map((izvjestaj)=>{
+                                    let { naziv, godinaId, predmetId } = izvjestaj;
+                                    let putanja = `/Lima/izvjestaji/godina=${godinaId}&predmet=${predmetId}`;
+                                    return <div className="card-body border p-0" key={`${izvjestaj.godinaId}${izvjestaj.predmetId}`}>
+                                        <div className="d-flex align-items-center w-100 LIMA-btn-green card-header py-0" style={{backgroundColor: "##ffb7b7"}}>
+                                            <Link to={putanja} className="d-flex align-items-center w-100" style={{minHeight: 50, color: 'black'}}>{naziv}</Link>
+                                        </div>
+                                    </div>
+                                })
+                            }
+                        </div>
+                </Collapse>
+                <h6 className="card-header btn-light border" style={{borderColor: '#dddddd'}} onClick={()=>{
+                        this.setState({collapseNepolozeni: !this.state.collapseNepolozeni})
+                    }}>
+                    {"Nepolozeni predmeti"}
+                </h6>
+                <Collapse isOpen={this.state.collapseNepolozeni}>
+                        <div className="card-body border p-0" style={{borderColor: '#aaa'}}>
+                            {
+                                nepolozeni.map((izvjestaj)=>{
+                                    let { naziv, godinaId, predmetId } = izvjestaj;
+                                    let putanja = `/Lima/izvjestaji/godina=${godinaId}&predmet=${predmetId}`;
+                                    return <div className="card-body border p-0" key={`${izvjestaj.godinaId}${izvjestaj.predmetId}`}>
+                                        <div className="d-flex align-items-center w-100 LIMA-btn-red card-header py-0">
+                                            <Link to={putanja} className="d-flex align-items-center w-100" style={{minHeight: 50, color: 'black'}}>{naziv}</Link>
+                                        </div>
+                                    </div>
+                                })
+                            }
+                        </div>
+                </Collapse>
+            </Fragment>
+        );
     }
     render(){
         return (
