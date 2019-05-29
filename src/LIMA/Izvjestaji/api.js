@@ -155,6 +155,7 @@ export const sacuvaniIzvjestaji = {//vraca se niz sacuvanih izvjestaja
         if (index > -1) {
             sacuvaniIzvjestajiNiz.splice(index, 1);
         }
+        sacuvaniIzvjestajiNiz = [...sacuvaniIzvjestajiNiz];
         return new Promise((resolve, reject) => {
             setTimeout(() => {//ako delete uspije vratiti objekat kao ispod
                 resolve({
