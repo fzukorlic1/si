@@ -37,13 +37,13 @@ class App extends Component {
                     <Fragment>
                       <Link to="/Lima">
                         <div className="btn btn-primary" onClick={()=>{
-                          window.localStorage.setItem("id", 1)
+                          window.localStorage.setItem("id", 100)
                         }}>student</div>
                         <div className="btn btn-primary" onClick={()=>{
-                          window.localStorage.setItem("id", 2)
+                          window.localStorage.setItem("id", 110)
                         }}>profa</div>
                         <div className="btn btn-primary" onClick={()=>{
-                          window.localStorage.setItem("id", 3)
+                          window.localStorage.setItem("id", 120)
                         }}>stud sluz</div>
                       </Link>
                     </Fragment>

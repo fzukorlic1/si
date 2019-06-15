@@ -4,7 +4,7 @@ import { Spinner } from 'reactstrap';
 import { toast } from 'react-toastify';
 
 import Precica from './Precica.js';
-import { sacuvaniIzvjestaji } from '../../api.js';
+import { sacuvaniIzvjestaji, student } from '../../api.js';
 import DodajIzvjestajModal from '../Modali/DodajIzvjestajModal.js';
 
 class Precice extends Component {
@@ -21,14 +21,16 @@ class Precice extends Component {
         })
     }
     componentDidMount(){
-        sacuvaniIzvjestaji.get().then((izvjestaji)=>{
+        let studentId = window.localStorage.getItem("id");
+        sacuvaniIzvjestaji.get(studentId).then((izvjestaji)=>{
             this.setState({
                 izvjestaji: izvjestaji
             })
         })
     }
     deleteIzvjestajLink(izvjestaj){
-        sacuvaniIzvjestaji.delete(1, izvjestaj).then((res)=>{
+        let studentId = window.localStorage.getItem("id");
+        sacuvaniIzvjestaji.delete(studentId, izvjestaj).then((res)=>{
             let izvjestaji = [...this.state.izvjestaji];
             let index = izvjestaji.indexOf(izvjestaj);
             if (index > -1) {
@@ -44,7 +46,8 @@ class Precice extends Component {
         })
     }
     addIzvjestajLink(izvjestaj){
-        sacuvaniIzvjestaji.put(1, izvjestaj).then((res)=>{
+        let studentId = window.localStorage.getItem("id");
+        sacuvaniIzvjestaji.put(studentId, izvjestaj).then((res)=>{
             let izvjestaji = [...this.state.izvjestaji];
             izvjestaji.push(izvjestaj);
             this.setState({

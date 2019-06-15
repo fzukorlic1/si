@@ -22,7 +22,7 @@ class TrenutnaGodina extends Component {
         })
     }
     componentDidMount(){
-        let studentId = 3;
+        let studentId = window.localStorage.getItem("id");
         godine.getTrenutnaGodina().then((godina)=>{
             predmeti.getPredmetiStudenta(studentId).then((data)=>{
                 let { polozeni , nepolozeni } = data;

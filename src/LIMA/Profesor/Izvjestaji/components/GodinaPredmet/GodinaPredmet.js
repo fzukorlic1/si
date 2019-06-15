@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import { Collapse, Spinner } from 'reactstrap';
 import { toast } from 'react-toastify';
-import { dataPredmetPoGodini, predmeti } from '../../../../Student/Izvjestaji/api.js';
 import { default as GodinaPredmetGUI } from '../../../../Student/Izvjestaji/components/GodinaPredmet/GodinaPredmet.js';
+import TabelarniPrikaz from './TabelarniPrikaz.js';
 
 
 class GodinaPredmet extends Component {
@@ -21,7 +21,7 @@ class GodinaPredmet extends Component {
     render(){
         return (
             this.state.daLiJeTabelarno == "true" ?
-            <div> tabela</div> :
+            <TabelarniPrikaz {...this.props} /> :
             <GodinaPredmetGUI {...this.props} />
         )
     }

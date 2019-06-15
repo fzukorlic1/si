@@ -14,23 +14,6 @@ import * as dummy from "./static/dummy.js";
     primjer za fail je pod sacuvaniIzvjestaji.delete ispod
 */
 
-let sacuvaniIzvjestajiNiz = [
-  { naziv: "IM2 2016/2017", godinaId: 12, predmetId: 12 },
-  { naziv: "IF1 2017/2018", godinaId: 13, predmetId: 4 }
-];
-
-let predmetiNiz = [
-  { naziv: "Inzenjerska matematika 1", id: 8 },
-  { naziv: "Inzenjerska matematika 2", id: 12 },
-  { naziv: "Inzenjerska fizika 1", id: 4 }
-];
-
-let godineNiz = [
-  { naziv: "2016/2017", id: 12 },
-  { naziv: "2017/2018", id: 13 },
-  { naziv: "2018/2019", id: 14 }
-];
-
 export const dataPredmetPoGodini = {
   get: (predmetId, godinaId, filter = null, datum = null) => {
     return fetch(
@@ -161,6 +144,42 @@ export const dataPredmetPoGodini = {
         });
       default:
     }*/
+  },
+  getDataZaProfesora: (profesorId, predmetId, godinaId) => {
+    return new Promise((resolve, reject) => {
+      resolve({
+          nazivGodine: '2011/2012',
+          nazivPredmeta: 'IM1',
+          data: [
+            {
+              imeStudenta: "fatih",
+              prezimeStudenta: "zukorlic",
+              indeks: '17861',
+              stavkeOcjenjivanja: [
+                {
+                  naziv: "Prvi parc. 03.04", //usmeni 2.3.2015., zadaca, parc 1.2.2015., prisustvo itd
+                  brojBodova: 10
+                },
+                {
+                  naziv: "drugi parc. 03.06", //usmeni 2.3.2015., zadaca, parc 1.2.2015., prisustvo itd
+                  brojBodova: 10
+                }
+              ]
+            },
+            {
+              imeStudenta: "fatih2",
+              prezimeStudenta: "zukorlic",
+              indeks: '17862',
+              stavkeOcjenjivanja: [
+                {
+                  naziv: "drugi parc. 03.06", //usmeni 2.3.2015., zadaca, parc 1.2.2015., prisustvo itd
+                  brojBodova: 10
+                }
+              ]
+            }
+          ]
+      })
+    });
   }
 };
 
@@ -168,7 +187,7 @@ export const dataPredmetPoGodini = {
 export const sacuvaniIzvjestaji = {
   //vraca se niz sacuvanih izvjestaja
   get: studentId => {
-    studentId = 100;
+    //studentId = 100;
     return new Promise((resolve, reject) => {
       fetch("http://localhost:31912/izvjestaji/precice?studentId=" + studentId)
         .then(res => res.json())
@@ -186,7 +205,8 @@ export const sacuvaniIzvjestaji = {
     });
   },
   delete: (studentId, izvjestaj) => {
-    izvjestaj.studentId = 100; //studentId
+    //izvjestaj.studentId = 100; //studentId
+    izvjestaj.studentId = studentId;
     return new Promise((resolve, reject) => {
       fetch("http://localhost:31912/izvjestaji/obrisiPrecicu", {
         method: "post",
@@ -201,8 +221,9 @@ export const sacuvaniIzvjestaji = {
     });
   },
   put: (studentId, izvjestaj) => {
-    izvjestaj.studentId = 100;
-    studentId = 100;
+    //izvjestaj.studentId = 100; //studentId
+    izvjestaj.studentId = studentId;
+    //studentId = 100;
     return new Promise((resolve, reject) => {
       fetch(
         "http://localhost:31912/izvjestaji/dodajPrecicu?studentId=" + studentId,
@@ -225,15 +246,21 @@ export const sacuvaniIzvjestaji = {
 export const predmeti = {
   get: () => {
     return new Promise((resolve, reject) => {
-      fetch("http://localhost:31912/predmeti")
+      fetch(/*"http://si2019alpha.herokuapp.com/api/predmet/GetPredmeti"*/ "http://localhost:31912/predmeti" )
         .then(res => res.json())
-        .then(rezultat => resolve(rezultat));
+        .then(rezultat => {
+          var predmeti=[];
+          for(var i=0; i<rezultat.length; i++){
+            predmeti.push({id:rezultat[i].id, naziv:rezultat[i].naziv});
+          }
+          resolve(predmeti);
+          });
     });
   },
   getPredmetiStudenta: studentId => {
     //vraca predmete koje student slusa na trenutnoj godini
     return new Promise((resolve, reject) => {
-      studentId = 100;
+      //studentId = 100;
       fetch("http://localhost:31912/predmeti_studenta?studentId=" + studentId)
         .then(res => res.json())
         .then(rezultat => {
@@ -321,7 +348,7 @@ export const godine = {
 
 export const student = {
   getProsjeci: studentId => {
-    studentId = 100;
+    //studentId = 100;
     return new Promise((resolve, reject) => {
       fetch("http://localhost:31912/izvjestaj/prosjekPoGodinama/" + studentId)
         .then(res => res.json())

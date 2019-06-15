@@ -22,7 +22,7 @@ class IzvjestajiProfesora extends Component {
         })
     }
     componentDidMount(){
-        let profesorId = 3;
+        let profesorId = window.localStorage.getItem("id");
         predmeti.getPredmetiProfesoraPoGodinama(profesorId).then((data)=>{
             let predmetiGodine = [];
             data.map((godinaPredmeti)=>{ 

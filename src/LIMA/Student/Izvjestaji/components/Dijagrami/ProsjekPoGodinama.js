@@ -27,13 +27,8 @@ class ProsjekPoGodinama extends Component {
         };
     }
     componentDidMount(){
-        let studentId = 3;
-        let niz = [
-            {naziv: "2016/2017", godinaId: 12, prosjek: 7.6},
-            {naziv: "2017/2018", godinaId: 13, prosjek: 7.2},
-            {naziv: "2018/2019", godinaId: 14, prosjek: 7.8}
-        ];
-
+        let studentId = window.localStorage.getItem("id");
+        
         student.getProsjeci(studentId).then( data => {
             let dataForState = {
                 labels: [],
