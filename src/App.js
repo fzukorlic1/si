@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import {BrowserRouter as Router, Route, Link} from 'react-router-dom'
 // import Alpha from './ALPHA/app.js'
 // import Beta from './BETA/app.js'
@@ -20,8 +20,9 @@ import {BrowserRouter as Router, Route, Link} from 'react-router-dom'
 // import Siera from './SIERA/app.js'
 // import Tango from './TANGO/app.js'
 // import Uniform from './UNIFORM/app.js'
-// import Header from './header'
-// import Footer from './footer'
+import Header from './header'
+import Footer from './footer'
+import './App.css';
 
 
 
@@ -29,11 +30,28 @@ class App extends Component {
   render() {
     return (
         <Router>
+          <Header />
             <div>
-                <Route exact path="/" component={()=>{return (
-                  <Link to="/Lima"><div>Lima</div></Link>)}} />
+                <Route exact path="/" component={()=>{
+                  return (
+                    <Fragment>
+                      <Link to="/Lima">
+                        <div className="btn btn-primary" onClick={()=>{
+                          window.localStorage.setItem("id", 1)
+                        }}>student</div>
+                        <div className="btn btn-primary" onClick={()=>{
+                          window.localStorage.setItem("id", 2)
+                        }}>profa</div>
+                        <div className="btn btn-primary" onClick={()=>{
+                          window.localStorage.setItem("id", 3)
+                        }}>stud sluz</div>
+                      </Link>
+                    </Fragment>
+                  )
+                }} />
                 <Route path="/Lima" component={Lima} />
             </div>
+            <Footer />
         </Router>
     );
   }
