@@ -20,14 +20,28 @@ class OcjenePoPredmetu extends Component {
             });
         })
     }
+    izracunajProsjecnuOcjenu(){
+        let ukupno = 0, koliko = 0;
+        let { data } = this.state;
+        for(let i=0;i<data.length;i++){
+            if(isNaN(data[i]))continue;
+            ukupno += data[i];
+            koliko++;
+        }
+        return ukupno/koliko;
+    }
     render(){
         return (this.state.data ? 
-            <GrafikStavka
-                data={this.state.data}
-                nazivStavke='Ocjena'
-                tipGrafika='Pie'
-            /> :
-            <Spinner />)
+            <Fragment>
+                <h6 className="pt-3 px-3">Prosjecna ocjena: {this.izracunajProsjecnuOcjenu()}</h6>
+                <GrafikStavka
+                    data={this.state.data}
+                    nazivStavke='Ocjena'
+                    tipGrafika='Pie'
+                />
+            </Fragment> :
+            <Spinner />
+            )
     }
 }
 

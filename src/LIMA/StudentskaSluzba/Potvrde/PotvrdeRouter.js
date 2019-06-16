@@ -1,8 +1,8 @@
 import React, { Fragment } from "react";
 import { Route, Link } from "react-router-dom";
 
-import PregledPotvrde from "./components/PregledPotvrde/PregledPotvrde.js";
-import Home from './components/Home.js';
+import PregledPotvrde from "../../Student/Potvrde/components/PregledPotvrde/PregledPotvrde";
+import Home from './components/Home';
 
 function PotvrdeRouter() {
   return (

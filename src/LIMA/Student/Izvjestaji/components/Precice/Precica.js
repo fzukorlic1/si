@@ -1,8 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom'
 
-import { Icon } from '@opuscapita/react-icons';
-
 import ConfirmationModal from '../Modali/ConfirmationModal.js';
 
 class Home extends Component {

@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Collapse } from 'reactstrap';
 
-import { dataPredmetPoGodini, predmeti } from '../../api.js';
+import { dataPredmetPoGodini, godine } from '../../api.js';
 import UkupniBrojPoPredmetu from '../Dijagrami/UkupniBrojPoPredmetu.js';
 import PrisustvoPoPredmetu from '../Dijagrami/PrisustvoPoPredmetu';
 import OcjenePoPredmetu from '../Dijagrami/OcjenePoPredmetu.js';
@@ -22,29 +22,32 @@ class GodinaPredmet extends Component {
     }
     componentDidMount(){
         let { predmetId, godinaId } = this.props.match.params;
-        dataPredmetPoGodini.get(predmetId, godinaId).then((data) => {
-            let { nizStavki, nazivGodine, nazivPredmeta } = data;
-            let opened = [];
-            for(let i=0;i<nizStavki.length;i++){
-                if(nizStavki[i].datum == null){
-                    opened[nizStavki[i].tip] = false;
-                } else {
-                    opened[`${nizStavki[i].tip} ${nizStavki[i].datum}`] = false;
+        godine.getTrenutnaGodina().then((godina)=>{
+            let godinaId = godina.id;
+            dataPredmetPoGodini.get(predmetId, godinaId).then((data) => {
+                let { nizStavki, nazivGodine, nazivPredmeta } = data;
+                let opened = [];
+                for(let i=0;i<nizStavki.length;i++){
+                    if(nizStavki[i].datum == null){
+                        opened[nizStavki[i].tip] = false;
+                    } else {
+                        opened[`${nizStavki[i].tip} ${nizStavki[i].datum}`] = false;
+                    }
                 }
-            }
-            this.setState({
-                nizStavki: nizStavki,
-                stavkeOpened: opened,
-                nazivGodine: nazivGodine,
-                nazivPredmeta: nazivPredmeta,
-                postoji: true
+                this.setState({
+                    nizStavki: nizStavki,
+                    stavkeOpened: opened,
+                    nazivGodine: nazivGodine,
+                    nazivPredmeta: nazivPredmeta,
+                    postoji: true
+                })
+            }).catch((res)=>{
+                toast.error(res.message);
+                this.setState({
+                    postoji: false
+                })
             })
-        }).catch((res)=>{
-            toast.error(res.message);
-            this.setState({
-                postoji: false
-            })
-        })
+        });
     }
     renderStavke(){
         return this.state.nizStavki.map((stavka) => {

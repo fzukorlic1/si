@@ -18,15 +18,19 @@ class DodajIzvjestajModal extends React.Component {
     }
     componentDidMount(){
         predmeti.get().then((predmeti)=>{
+            let predmetId = 0;
+            if(predmeti.length > 0)predmetId = predmeti[0].id;
             this.setState({
                 predmeti: predmeti,
-                izvjestaj: {...this.state.izvjestaj, predmetId: predmeti[0].id}
+                izvjestaj: {...this.state.izvjestaj, predmetId: predmetId}
             })
         });
         godine.get().then((godine)=>{
+            let godinaId = 0;
+            if(godine.length > 0)godinaId = godine[0].id;
             this.setState({
                 godine: godine,
-                izvjestaj: {...this.state.izvjestaj, godinaId: godine[0].id}
+                izvjestaj: {...this.state.izvjestaj, godinaId: godinaId}
             })
         });
     }

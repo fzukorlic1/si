@@ -53,7 +53,6 @@ class TabelarniPrikaz extends Component {
                     {this.state.nizStavki.map((stavka)=>{
                         for(let i=0;i<student.stavkeOcjenjivanja.length;i++){
                             let stavkaPostojeca = student.stavkeOcjenjivanja[i];
-                            console.log("stavka", stavka, stavkaPostojeca.naziv)
                             if(stavkaPostojeca.naziv == stavka){
                                 return <td>{stavkaPostojeca.brojBodova}</td>
                             }

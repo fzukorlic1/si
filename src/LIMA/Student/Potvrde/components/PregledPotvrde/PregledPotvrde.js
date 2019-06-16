@@ -24,28 +24,21 @@ class PregledPotvrde extends Component {
                 <div> loading... </div>
             );
         }
-        let { 
-            ime, 
-            prezime, 
-            brojIndeksa, 
-            datumRodjenja, 
-            mjestoRodjenja, 
-            opcinaRodjenja, 
-            drzavaRodjenja 
-        } = this.state.student;
-        let {
-            kojiPut,
-            akademskaGodina,
-            semestar,
-            ciklus,
-            tipStudenta,
-            smjer,
-            tipStudija
-        } = this.state.detaljiOPohadjanju;
-        let {
-            dekan,
-            // adresa, url loga, telefon ??? da nije predefined slika
-        } = this.state.detaljiOFakultetu;
+        let { student, detaljiOPohadjanju } = this.state;
+        let  
+            ime             = student[0].ime           ,
+            prezime         = student[1].prezime       ,
+            brojIndeksa     = student[2].indeks        ,
+            mjestoRodjenja  = student[3].mjestoRodjenja,
+            datumRodjenja   = student[4].datumRodjenja ,
+            kanton          = student[5].kanton        ,
+            semestar        = student[6].semestar      ,
+            drzavljanstvo   = student[7].drzavljanstvo ,
+
+            akademskaGodina = detaljiOPohadjanju[0].akademskaGodina,
+            ciklus          = detaljiOPohadjanju[1].ciklus         ,
+            smjer           = detaljiOPohadjanju[2].smjer;         
+        let dekan = 'V. prof. dr Samim Konjicija, dipl.ing.el.';
         let {
             svrha,
             datumObrade
@@ -80,16 +73,16 @@ class PregledPotvrde extends Component {
                         <td><strong>{mjestoRodjenja}</strong></td>
                     </tr>
                     <tr>
-                        <td>Općina rođenja:</td>
-                        <td><strong>{opcinaRodjenja}</strong></td>
+                        <td>Kanton:</td>
+                        <td><strong>{kanton}</strong></td>
                     </tr>
                     <tr>
-                        <td>Država rođenja:</td>
-                        <td><strong>{drzavaRodjenja}</strong></td>
+                        <td>Državljanstvo:</td>
+                        <td><strong>{drzavljanstvo}</strong></td>
                     </tr>
                 </tbody></table>
                 <br />
-                <p>Potvrđuje se da je {`${ime} ${prezime}`} upisan {kojiPut}. put u akademskoj {akademskaGodina} godini u {semestar} semestar - {ciklus} ciklus kao {tipStudenta} student, na studiju {smjer} ({tipStudija}).</p>
+                <p>Potvrđuje se da je {`${ime} ${prezime}`} u akademskoj {akademskaGodina} godini upisan u {semestar} semestar - {ciklus} ciklus kao redovan student, na studiju {smjer} (BSc).</p>
                 
                 <p>Ova potvrda se izdaje u svrhu {svrha}, te se u druge svrhe ne može koristiti.</p>
 

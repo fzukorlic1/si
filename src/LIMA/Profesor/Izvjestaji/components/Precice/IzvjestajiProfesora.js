@@ -42,13 +42,11 @@ class IzvjestajiProfesora extends Component {
     }
     groupStavke(groupBy){
         let { predmetiGodine } = this.state;
-        console.log(predmetiGodine)
         let grouped = {};
         let collapseItems = {};
         if(groupBy == "godina"){
             predmetiGodine.map((stavka)=>{
                 if(!(stavka.godinaId in grouped)){
-                    console.log("nema "+stavka.godinaId)
                     grouped[stavka.godinaId] = {
                         naziv: stavka.godinaNaziv,
                         id: stavka.godinaId,

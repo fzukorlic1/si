@@ -1,4 +1,5 @@
 import * as dummy from "./static/dummy.js";
+import axios from 'axios';
 
 /*
     !!!!!!!!!!!!!!!!!!!!!!!! 
@@ -14,37 +15,24 @@ import * as dummy from "./static/dummy.js";
     primjer za fail je pod sacuvaniIzvjestaji.delete ispod
 */
 
+let nasBackendURL = "http://localhost:31912";
+//let nasBackend = "https://si2019lima.herokuapp.com";
+
 export const dataPredmetPoGodini = {
   get: (predmetId, godinaId, filter = null, datum = null) => {
-    return fetch(
-      "http://localhost:31912/Izvjestaji/dajPredmetPoGodini/" +
-        predmetId +
-        "/" +
-        godinaId +
-        "/" +
-        filter +
-        "/" +
-        datum
-    ).then(podaci => podaci.json());
+    if(datum != null){
+      datum = datum.substring(0, 10);
+    }
     //filter oznacava koju data-u treba pokupit sa servera
     //u switchu ispod vidjeti koji sve tip postoji i kojeg formata su podaci
     //datum je string oblika DD.MM.YYYY. i koristi se u ispitima
-    /* switch (filter) {
+    switch (filter) {
       case "Prvi parcijalni":
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            resolve({
-              izasloNaIspit: 9,
-              ukupnoStudenata: 12,
-              polozilo: 9,
-              data: [10, 10, 10, 10, 10, 13, 13, 13, 13]
-            }); //5 ljudi imalo 10 bodova, 4 imalo 13 bodova na 1. parcijali
-          }, 100);
-        });
-      case "Drugi parcijalni":
-        return new Promise((resolve, reject) => {
-          fetch(
-            "http://localhost:31912/izvjestaj/drugiParcijalni/8/11/10.06.2019"
+       case "Drugi parcijalni":
+       case "Usmeni":
+      return new Promise((resolve, reject) => {
+       fetch(
+            nasBackendURL + "/izvjestaj/ispit/"+ filter+"/"+ predmetId + "/" +godinaId +"/" + datum
           )
             .then(res => res.json())
             .then(
@@ -57,130 +45,75 @@ export const dataPredmetPoGodini = {
               },
               error => reject({ message: "Ne može se konektovati na bazu" })
             );
-          /* setTimeout(() => {
-                        resolve({
-                            izasloNaIspit: 9,
-                            ukupnoStudenata: 12,
-                            polozilo: 9,
-                            data: [10, 10, 10, 10, 11, 11, 11, 11, 11]
-                        });//4 ljudi imalo 10 bodova, 5 imalo 11 bodova na 2. parcijali
-                    }, 100);*/
-    /*  });
-      case "Usmeni":
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            resolve({
-              izasloNaIspit: 9,
-              ukupnoStudenata: 12,
-              polozilo: 4,
-              data: [30, 20, 21, 21, 25, 30, 30, 30, 20]
-            }); //2 ljudi imalo 20 bodova, 2 imalo 21 bodova, i 4 imalo 30 bodova na usmenom
-          }, 100);
-        });
-      case "Prisustvo": //vraca se niz bodova prisustva
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            resolve([10, 10, 10, 10, 10, 0, 0, 5, 5]); //5 ljudi imalo 10, 2 imalo 0 i 2 imalo 5 bodova na prisustvo
-          }, 100);
-        });
-      case "Zadaca": //vraca se niz bodova zadaca
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            resolve([10, 9, 9, 9, 9, 9, 9, 8, 8]); //1 student imao 10, 6 imalo 9 i 2 imalo 8 bodova na zadacu
-          }, 100);
-        });
-      case "Bodovi": //vraca se niz ukupnih bodova
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            resolve([90, 90, 65, 65, 65, 55, 55, 55, 55]); //2 studenta imala 90, 3 imalo 65 i 4 imalo 55 bodova ukupno
-          }, 100);
-        });
-      case "Ocjena": //vraca se niz ocjena, ako neki student nije polozio za njega se vraca "Nije polozio"
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            resolve(["Nije polozio", "Nije polozio", 6, 6, 6, 6, 7, 7, 7]); //2 studenta palo, 4 imalo 6 i 3 imalo 7 ocjenu
-          }, 100);
-        });
-      case null: //vraca se objekat koji sadrzi naziv predmeta i niz stavki koje godina posjeduje npr. zadace, prisustvo, bodovi, ocjena, rokovi ispita
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            let postojiPredmet = false,
-              postojiGodina = false;
-            let nazivPredmeta, nazivGodine;
-            for (let i = 0; i < predmetiNiz.length; i++) {
-              if (predmetiNiz[i].id == predmetId) {
-                postojiPredmet = true;
-                nazivPredmeta = predmetiNiz[i].naziv;
-                break;
-              }
-            }
-            for (let i = 0; i < godineNiz.length; i++) {
-              if (godineNiz[i].id == godinaId) {
-                postojiGodina = true;
-                nazivGodine = godineNiz[i].naziv;
-                break;
-              }
-            }
-            if (postojiGodina && postojiPredmet) {
-              resolve({
-                nazivPredmeta: nazivPredmeta,
-                nazivGodine: nazivGodine,
-                nizStavki: [
-                  { tip: "Prisustvo" },
-                  { tip: "Zadaca" },
-                  { tip: "Bodovi" },
-                  { tip: "Ocjena" },
-                  { tip: "Prvi parcijalni", datum: "02.03.2019." },
-                  { tip: "Drugi parcijalni", datum: "10.06.2019." },
-                  { tip: "Usmeni", datum: "02.06.2019." },
-                  { tip: "Prvi parcijalni", datum: "02.09.2019." },
-                  { tip: "Drugi parcijalni", datum: "07.09.2019." },
-                  { tip: "Usmeni", datum: "11.09.2019." }
-                ]
-              });
-            }
-            reject({ message: "Izvjestaj ne postoji." });
-          }, 100);
-        });
-      default:
-    }*/
+      });
+      
+      case "Prisustvo":
+      case "Zadaca":
+      case "Bodovi":
+      case "Ocjena":
+      case null:
+       //vraca se niz bodova prisustva
+        return fetch(
+          nasBackendURL + "/Izvjestaji/dataPredmetPoGodini/" +
+            predmetId +
+            "/" +
+            godinaId +
+            "/" +
+            filter +
+            "/" +
+            datum
+        ).then(podaci => podaci.json());
+      
+    }
   },
   getDataZaProfesora: (profesorId, predmetId, godinaId) => {
     return new Promise((resolve, reject) => {
-      resolve({
-          nazivGodine: '2011/2012',
-          nazivPredmeta: 'IM1',
-          data: [
-            {
-              imeStudenta: "fatih",
-              prezimeStudenta: "zukorlic",
-              indeks: '17861',
-              stavkeOcjenjivanja: [
-                {
-                  naziv: "Prvi parc. 03.04", //usmeni 2.3.2015., zadaca, parc 1.2.2015., prisustvo itd
-                  brojBodova: 10
-                },
-                {
-                  naziv: "drugi parc. 03.06", //usmeni 2.3.2015., zadaca, parc 1.2.2015., prisustvo itd
-                  brojBodova: 10
-                }
-              ]
-            },
-            {
-              imeStudenta: "fatih2",
-              prezimeStudenta: "zukorlic",
-              indeks: '17862',
-              stavkeOcjenjivanja: [
-                {
-                  naziv: "drugi parc. 03.06", //usmeni 2.3.2015., zadaca, parc 1.2.2015., prisustvo itd
-                  brojBodova: 10
-                }
-              ]
-            }
-          ]
-      })
-    });
-  }
+      fetch(nasBackendURL + "/izvjestajOSvemu/" + predmetId + "/" + godinaId)
+      .then(res => res.json())
+      .then(
+        result => {
+          /* if (result[0].message !== undefined) {
+            reject(result[0].message);
+          } else {*/
+          resolve(result);
+          //}
+        },
+        error => reject({ message: "Ne može se konektovati na bazu" })
+      );
+resolve({
+  nazivGodine: '2011/2012',
+  nazivPredmeta: 'IM1',
+  data: [
+    {
+      imeStudenta: "fatih",
+      prezimeStudenta: "zukorlic",
+      indeks: '17861',
+      stavkeOcjenjivanja: [
+        {
+          naziv: "Prvi parc. 03.04", //usmeni 2.3.2015., zadaca, parc 1.2.2015., prisustvo itd
+          brojBodova: 10
+        },
+        {
+          naziv: "drugi parc. 03.06", //usmeni 2.3.2015., zadaca, parc 1.2.2015., prisustvo itd
+          brojBodova: 10
+        }
+      ]
+    },
+    {
+      imeStudenta: "fatih2",
+      prezimeStudenta: "zukorlic",
+      indeks: '17862',
+      stavkeOcjenjivanja: [
+        {
+          naziv: "drugi parc. 03.06", //usmeni 2.3.2015., zadaca, parc 1.2.2015., prisustvo itd
+          brojBodova: 10
+        }
+      ]
+    }
+  ]
+})
+});
+}
 };
 
 //izvjestaj je u obliku kao objekti iz niza sacuvaniIzvjestajNiz
@@ -189,7 +122,7 @@ export const sacuvaniIzvjestaji = {
   get: studentId => {
     //studentId = 100;
     return new Promise((resolve, reject) => {
-      fetch("http://localhost:31912/izvjestaji/precice?studentId=" + studentId)
+      fetch(nasBackendURL + "/izvjestaji/precice?studentId=" + studentId)
         .then(res => res.json())
         .then(
           result => {
@@ -208,7 +141,7 @@ export const sacuvaniIzvjestaji = {
     //izvjestaj.studentId = 100; //studentId
     izvjestaj.studentId = studentId;
     return new Promise((resolve, reject) => {
-      fetch("http://localhost:31912/izvjestaji/obrisiPrecicu", {
+      fetch(nasBackendURL + "/izvjestaji/obrisiPrecicu", {
         method: "post",
         headers: {
           Accept: "application/json",
@@ -221,32 +154,24 @@ export const sacuvaniIzvjestaji = {
     });
   },
   put: (studentId, izvjestaj) => {
-    //izvjestaj.studentId = 100; //studentId
     izvjestaj.studentId = studentId;
-    //studentId = 100;
+    izvjestaj.godinaId = 11;
     return new Promise((resolve, reject) => {
-      fetch(
-        "http://localhost:31912/izvjestaji/dodajPrecicu?studentId=" + studentId,
-        {
-          method: "post",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(izvjestaj)
-        }
-      )
-        .then(res => res.json())
-        .then(rezultat => resolve(rezultat));
-    });
-    
+      axios.post(nasBackendURL + "/izvjestaji/dodajPrecicu", {
+          izvjestaj: izvjestaj
+      }).then( res => resolve({
+          datumObrade: res.data
+      })).catch( err => reject({
+          message: "Greska pri obradi."
+      }))
+    })
   }
 };
 
 export const predmeti = {
   get: () => {
     return new Promise((resolve, reject) => {
-      fetch(/*"http://si2019alpha.herokuapp.com/api/predmet/GetPredmeti"*/ "http://localhost:31912/predmeti" )
+      fetch(/*"http://si2019alpha.herokuapp.com/api/predmet/GetPredmeti"*/ nasBackendURL + "/predmeti" )
         .then(res => res.json())
         .then(rezultat => {
           var predmeti=[];
@@ -261,46 +186,20 @@ export const predmeti = {
     //vraca predmete koje student slusa na trenutnoj godini
     return new Promise((resolve, reject) => {
       //studentId = 100;
-      fetch("http://localhost:31912/predmeti_studenta?studentId=" + studentId)
+      fetch(nasBackendURL + "/predmeti_studenta?studentId=" + studentId)
         .then(res => res.json())
         .then(rezultat => {
-          console.log(rezultat);
           resolve(rezultat)
         });
     });
   },
   getPredmetiProfesoraPoGodinama: profesorId => {
     return new Promise((resolve, reject) => {
-      resolve([
-        {
-          godinaId: '11',
-          godinaNaziv: '2011/2012',
-          predmeti: [
-            {
-              id: '102',
-              naziv: 'predmet3'
-            },
-            {
-              id: '103',
-              naziv: 'IM2'
-            },
-          ]
-        },
-        {
-          godinaId: '12',
-          godinaNaziv: '2012/2013',
-          predmeti: [
-            {
-              id: '102',
-              naziv: 'predmet3'
-            },
-            {
-              id: '103',
-              naziv: 'IM2'
-            },
-          ]
-        },
-      ])
+      fetch(nasBackendURL + "/getPredmetiProfesora?profesorId=" + profesorId)
+        .then(res => res.json())
+        .then(rezultat => {
+          resolve(rezultat)
+        });
     });
   }
 };
@@ -350,7 +249,7 @@ export const student = {
   getProsjeci: studentId => {
     //studentId = 100;
     return new Promise((resolve, reject) => {
-      fetch("http://localhost:31912/izvjestaj/prosjekPoGodinama/" + studentId)
+      fetch(nasBackendURL + "/izvjestaj/prosjekPoGodinama/" + studentId)
         .then(res => res.json())
         .then(
           result => {
