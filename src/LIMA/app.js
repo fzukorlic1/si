@@ -29,10 +29,15 @@ class App extends Component {
             this.setState({
               tipUsera: res
             })
+        }).catch(err => {
+            this.setState({
+                tipUsera: "nemapravo"
+            })
         })
     }
     render(){
         if(this.state.tipUsera == null) return <div className="w-100 d-flex justify-content-center"><Spinner /></div>
+        if(this.state.tipUsera == "nemapravo") return <div className="w-100 d-flex justify-content-center">Ulogujte se prvo na Romeo.</div>
         const Router = routeri[this.state.tipUsera]
         return (
             <Router />

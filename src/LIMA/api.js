@@ -10,6 +10,7 @@ export const user = {
             }
             resolve(obj[userId])
             axios.get(`http://si2019oscar.herokuapp.com/pretragaId/${userId}/dajUlogu`).then((res)=>{
+                if(res.data == "")reject("Korisnik nema uloge.");
                 resolve(res.data)
             }).catch((err)=>{
                 reject(err)

@@ -68,7 +68,7 @@ export const dataPredmetPoGodini = {
   },
   getDataZaProfesora: (profesorId, predmetId, godinaId) => {
     return new Promise((resolve, reject) => {
-      fetch(nasBackendURL + "/izvjestajOSvemu/" + predmetId + "/" + godinaId)
+      fetch(nasBackendURL + "/izvjestajOSvemu/" + profesorId + "/" + predmetId + "/" + godinaId)
       .then(res => res.json())
       .then(
         result => {
@@ -80,38 +80,38 @@ export const dataPredmetPoGodini = {
         },
         error => reject({ message: "Ne može se konektovati na bazu" })
       );
-resolve({
-  nazivGodine: '2011/2012',
-  nazivPredmeta: 'IM1',
-  data: [
-    {
-      imeStudenta: "fatih",
-      prezimeStudenta: "zukorlic",
-      indeks: '17861',
-      stavkeOcjenjivanja: [
-        {
-          naziv: "Prvi parc. 03.04", //usmeni 2.3.2015., zadaca, parc 1.2.2015., prisustvo itd
-          brojBodova: 10
-        },
-        {
-          naziv: "drugi parc. 03.06", //usmeni 2.3.2015., zadaca, parc 1.2.2015., prisustvo itd
-          brojBodova: 10
-        }
-      ]
-    },
-    {
-      imeStudenta: "fatih2",
-      prezimeStudenta: "zukorlic",
-      indeks: '17862',
-      stavkeOcjenjivanja: [
-        {
-          naziv: "drugi parc. 03.06", //usmeni 2.3.2015., zadaca, parc 1.2.2015., prisustvo itd
-          brojBodova: 10
-        }
-      ]
-    }
-  ]
-})
+// resolve({
+//   nazivGodine: '2011/2012',
+//   nazivPredmeta: 'IM1',
+//   data: [
+//     {
+//       imeStudenta: "fatih",
+//       prezimeStudenta: "zukorlic",
+//       indeks: '17861',
+//       stavkeOcjenjivanja: [
+//         {
+//           naziv: "Prvi parc. 03.04", //usmeni 2.3.2015., zadaca, parc 1.2.2015., prisustvo itd
+//           brojBodova: 10
+//         },
+//         {
+//           naziv: "drugi parc. 03.06", //usmeni 2.3.2015., zadaca, parc 1.2.2015., prisustvo itd
+//           brojBodova: 10
+//         }
+//       ]
+//     },
+//     {
+//       imeStudenta: "fatih2",
+//       prezimeStudenta: "zukorlic",
+//       indeks: '17862',
+//       stavkeOcjenjivanja: [
+//         {
+//           naziv: "drugi parc. 03.06", //usmeni 2.3.2015., zadaca, parc 1.2.2015., prisustvo itd
+//           brojBodova: 10
+//         }
+//       ]
+//     }
+//   ]
+// })
 });
 }
 };

@@ -22,8 +22,6 @@ class GodinaPredmet extends Component {
     }
     componentDidMount(){
         let { predmetId, godinaId } = this.props.match.params;
-        godine.getTrenutnaGodina().then((godina)=>{
-            let godinaId = godina.id;
             dataPredmetPoGodini.get(predmetId, godinaId).then((data) => {
                 let { nizStavki, nazivGodine, nazivPredmeta } = data;
                 let opened = [];
@@ -47,7 +45,6 @@ class GodinaPredmet extends Component {
                     postoji: false
                 })
             })
-        });
     }
     renderStavke(){
         return this.state.nizStavki.map((stavka) => {
